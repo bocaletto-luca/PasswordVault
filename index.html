@@ -1,51 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Password Generator & Vault | Bocaletto Luca</title>
-  <meta name="description" content="Generate strong passwords and store them securely with username/email. Filter entries, import/export JSON, copy to clipboard—all in one page.">
-  <meta name="keywords" content="password generator, vault, AES encryption, localStorage, username, email, import JSON, export JSON, copy to clipboard">
-  <meta name="author" content="Bocaletto Luca">
-  <link rel="canonical" href="https://github.com/bocaletto-luca/PasswordVault">
-  <meta property="og:title" content="Password Generator & Vault">
-  <meta property="og:description" content="Generate and securely store passwords locally with username/email. No server required.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://github.com/bocaletto-luca/PasswordVault">
-  <meta property="og:image" content="https://picsum.photos/seed/vault/1200/630">
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebApplication",
-    "name":"Password Generator & Vault",
-    "url":"https://github.com/bocaletto-luca/PasswordVault",
-    "author":{"@type":"Person","name":"Bocaletto Luca"},
-    "description":"Generate and securely store passwords locally with username/email. Filter entries, import/export JSON, copy to clipboard."
-  }
-  </script>
-  <link href="https://fonts.googleapis.com/css?family=Inter:400,500&display=swap" rel="stylesheet">
+  <meta name="description" content="Generate and store passwords securely with username/email. Filter, import/export JSON, copy to clipboard." />
+  <link rel="canonical" href="https://github.com/bocaletto-luca/PasswordVault" />
+  <meta property="og:title" content="Password Generator & Vault" />
+  <meta property="og:description" content="Generate and securely store passwords locally with username/email. No server required." />
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f7f8fa;
-      --card: #ffffff;
-      --text: #1f2937;
-      --primary: #2563eb;
-      --primary-dark: #1e40af;
-      --accent: #10b981;
-      --accent-dark: #0e7f60;
-      --danger: #e53e3e;
-      --danger-dark: #9b2c2c;
-      --border: #d1d5db;
-      --radius: 8px;
-      --gap: 1rem;
-      --max-w: 800px;
-      --transition: .2s ease-in-out;
+      --bg: #f7f8fa; --card: #fff; --text: #1f2937;
+      --primary: #2563eb; --primary-dark: #1e40af;
+      --accent: #10b981; --accent-dark: #0e7f60;
+      --danger: #e53e3e; --danger-dark: #9b2c2c;
+      --border: #d1d5db; --radius: 8px; --gap: 1rem;
+      --max-w: 800px; --trans: .2s ease-in-out;
     }
-    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    *,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
     body {
       font-family:'Inter',sans-serif;
-      background:var(--bg);
-      color:var(--text);
+      background:var(--bg); color:var(--text);
       display:flex; flex-direction:column;
       align-items:center; min-height:100vh;
       padding:var(--gap);
@@ -62,20 +38,14 @@
     }
     nav button {
       padding:.5rem 1rem;
-      background:var(--primary);
-      color:#fff;
-      border:none;
-      border-radius:var(--radius);
-      cursor:pointer;
-      transition:background var(--transition);
+      background:var(--primary); color:#fff;
+      border:none; border-radius:var(--radius);
+      cursor:pointer; transition:background var(--trans);
     }
     nav button.active,
-    nav button:hover {
-      background:var(--primary-dark);
-    }
+    nav button:hover { background:var(--primary-dark); }
     main {
-      flex:1;
-      width:100%; max-width:var(--max-w);
+      flex:1; width:100%; max-width:var(--max-w);
       margin:auto;
     }
     .section { display:none; }
@@ -87,10 +57,7 @@
       padding:var(--gap);
       margin-bottom:var(--gap);
     }
-    h2 {
-      font-size:1.25rem;
-      margin-bottom:.5rem;
-    }
+    h2 { font-size:1.25rem; margin-bottom:.5rem; }
     .options {
       display:flex; flex-wrap:wrap; gap:.5rem;
       margin-bottom:var(--gap);
@@ -104,8 +71,7 @@
       margin-bottom:var(--gap);
     }
     .form-row label {
-      flex:1; min-width:120px;
-      font-size:.95rem;
+      flex:1; min-width:120px; font-size:.95rem;
     }
     input[type="text"],
     input[type="number"],
@@ -118,44 +84,39 @@
       background:#fff;
     }
     button {
-      font:inherit;
-      border:none;
+      font:inherit; border:none;
       border-radius:var(--radius);
-      cursor:pointer;
-      transition:background var(--transition);
+      cursor:pointer; transition:background var(--trans);
     }
     .primary {
       background:var(--primary);
       color:#fff;
       padding:.5rem 1rem;
     }
-    .primary:hover {
-      background:var(--primary-dark);
-    }
+    .primary:hover { background:var(--primary-dark); }
     .accent {
-      background:var(--accent);
-      color:#fff;
+      background:var(--accent); color:#fff;
       padding:.5rem 1rem;
     }
-    .accent:hover {
-      background:var(--accent-dark);
-    }
+    .accent:hover { background:var(--accent-dark); }
     .danger {
-      background:var(--danger);
-      color:#fff;
+      background:var(--danger); color:#fff;
       padding:.5rem 1rem;
     }
-    .danger:hover {
-      background:var(--danger-dark);
-    }
+    .danger:hover{ background:var(--danger-dark); }
+
     /* Generator */
-    #generator input[readonly] {
-      background:#e5e7eb;
+    #generator input[readonly] { background:#e5e7eb; }
+
+    /* Vault Table */
+    #vault-filter {
+      width:100%; padding:.5rem;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      margin-bottom:var(--gap);
     }
-    /* Vault table */
     #vault-table {
-      width:100%;
-      border-collapse:collapse;
+      width:100%; border-collapse:collapse;
       margin-bottom:var(--gap);
     }
     #vault-table th,
@@ -164,27 +125,15 @@
       padding:.5rem;
       text-align:left;
     }
-    #vault-table th {
-      background:#f0f4ff;
-    }
+    #vault-table th { background:#f0f4ff; }
     #vault-table input {
-      width:100%;
-      background:transparent;
-      border:none;
-      padding:.25rem;
-      font:inherit;
+      width:100%; background:transparent;
+      border:none; padding:.25rem; font:inherit;
     }
     #vault-table input:focus {
-      background:#fff;
-      border:1px solid var(--primary);
+      background:#fff; border:1px solid var(--primary);
     }
-    #filter-site {
-      width:100%;
-      padding:.5rem;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      margin-bottom:var(--gap);
-    }
+
     /* Modal */
     #modal-overlay {
       position:fixed; top:0; left:0;
@@ -192,7 +141,7 @@
       background:rgba(0,0,0,0.6);
       display:flex; align-items:center; justify-content:center;
       visibility:hidden; opacity:0;
-      transition:opacity var(--transition);
+      transition:opacity var(--trans);
       z-index:1000;
     }
     #modal-overlay.visible {
@@ -205,310 +154,340 @@
       max-width:320px; width:100%;
       text-align:center;
     }
-    #modal h3 {
-      margin-bottom:.5rem;
-    }
+    #modal h3 { margin-bottom:.5rem; }
     #modal input {
-      width:100%;
-      padding:.5rem;
+      width:100%; padding:.5rem;
       border:1px solid var(--border);
       border-radius:var(--radius);
-      font:inherit;
-      margin-bottom:var(--gap);
+      font:inherit; margin-bottom:var(--gap);
     }
+
     /* Footer */
     footer {
-      font-size:.85rem;
-      color:#555;
+      font-size:.85rem; color:#555;
       padding:var(--gap) 0;
     }
     footer a {
-      color:var(--primary);
-      text-decoration:none;
+      color:var(--primary); text-decoration:none;
     }
-    footer a:hover {
-      text-decoration:underline;
-    }
+    footer a:hover { text-decoration:underline; }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Password Generator & Vault</h1>
+    <p>Generate strong passwords and store them securely with username/email.</p>
+    <nav>
+      <button id="tab-gen" class="active">Generator</button>
+      <button id="tab-vault">Vault</button>
+    </nav>
+  </header>
 
-<header>
-  <h1>Password Generator & Vault</h1>
-  <p>Generate strong passwords and store them securely with username/email.</p>
-  <nav>
-    <button id="tab-gen" class="active">Generator</button>
-    <button id="tab-vault">Vault</button>
-  </nav>
-</header>
+  <main>
+    <!-- Generator -->
+    <section id="generator" class="section active">
+      <div class="card">
+        <h2>Generate Password</h2>
+        <div class="options">
+          <label><input type="checkbox" id="opt-lower" checked> lowercase</label>
+          <label><input type="checkbox" id="opt-upper" checked> UPPERCASE</label>
+          <label><input type="checkbox" id="opt-numbers" checked> 123456</label>
+          <label><input type="checkbox" id="opt-symbols"> !@#$%</label>
+          <label>Length <input type="number" id="opt-length" min="4" max="64" value="16"></label>
+        </div>
+        <div class="form-row">
+          <label>Generated Password
+            <input type="text" id="gen-password" readonly>
+          </label>
+          <button id="copy-gen" class="accent">Copy</button>
+        </div>
+        <button id="generate" class="primary">Generate</button>
+      </div>
 
-<main>
-  <!-- Generator -->
-  <section id="generator" class="section active">
-    <div class="card">
-      <h2>Generate Password</h2>
-      <div class="options">
-        <label><input type="checkbox" id="opt-lower" checked> lowercase</label>
-        <label><input type="checkbox" id="opt-upper" checked> UPPERCASE</label>
-        <label><input type="checkbox" id="opt-numbers" checked> 123456</label>
-        <label><input type="checkbox" id="opt-symbols"> !@#$%</label>
-        <label>Length <input type="number" id="opt-length" min="4" max="64" value="16"></label>
+      <div class="card">
+        <h2>Save to Vault</h2>
+        <div class="form-row">
+          <label>Site / App
+            <input type="text" id="entry-site" placeholder="example.com">
+          </label>
+          <label>Username / Email
+            <input type="text" id="entry-user" placeholder="user@example.com">
+          </label>
+        </div>
+        <div class="form-row">
+          <label>Password
+            <input type="text" id="entry-password" placeholder="paste or generate">
+          </label>
+        </div>
+        <button id="save-entry" class="accent">Save Entry</button>
       </div>
-      <div class="form-row">
-        <label>Generated Password
-          <input type="text" id="gen-password" readonly>
-        </label>
-        <button id="copy-gen" class="accent">Copy</button>
+    </section>
+
+    <!-- Vault -->
+    <section id="vault" class="section">
+      <div class="card">
+        <h2>Vault Entries</h2>
+        <input type="text" id="vault-filter" placeholder="Filter by site or user">
+
+        <table id="vault-table">
+          <thead>
+            <tr>
+              <th>Site / App</th>
+              <th>Username / Email</th>
+              <th>Password</th>
+              <th>Copy</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody id="entries-body"></tbody>
+        </table>
+
+        <div id="io-controls">
+          <button id="export-vault" class="primary">Export JSON</button>
+          <button id="import-vault" class="primary">Import JSON</button>
+          <input type="file" id="import-vault-file" accept=".json">
+        </div>
       </div>
-      <button id="generate" class="primary">Generate</button>
+    </section>
+  </main>
+
+  <!-- Master Password Modal -->
+  <div id="modal-overlay">
+    <div id="modal">
+      <h3 id="modal-title">Enter Master Password</h3>
+      <input type="password" id="master-pw" placeholder="Master password">
+      <button id="unlock-btn" class="primary">Unlock Vault</button>
     </div>
-
-    <div class="card">
-      <h2>Save to Vault</h2>
-      <div class="form-row">
-        <label>Site / App
-          <input type="text" id="entry-site" placeholder="example.com">
-        </label>
-        <label>Username / Email
-          <input type="text" id="entry-user" placeholder="user@example.com">
-        </label>
-      </div>
-      <div class="form-row">
-        <label>Password
-          <input type="text" id="entry-password" placeholder="paste or generate">
-        </label>
-      </div>
-      <button id="save-entry" class="accent">Save Entry</button>
-    </div>
-  </section>
-
-  <!-- Vault -->
-  <section id="vault" class="section">
-    <div class="card">
-      <h2>Vault Entries</h2>
-      <input type="text" id="filter-site" placeholder="Filter by site or user">
-      <table id="vault-table">
-        <thead>
-          <tr>
-            <th>Site / App</th>
-            <th>Username / Email</th>
-            <th>Password</th>
-            <th>Copy</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody id="entries-body"></tbody>
-      </table>
-      <div id="io-controls">
-        <button id="export-vault" class="primary">Export JSON</button>
-        <button id="import-vault" class="primary">Import JSON</button>
-        <input type="file" id="import-vault-file" accept=".json">
-      </div>
-    </div>
-  </section>
-</main>
-
-<!-- Master Password Modal -->
-<div id="modal-overlay">
-  <div id="modal">
-    <h3 id="modal-title">Enter Master Password</h3>
-    <input type="password" id="master-pw" placeholder="Master password">
-    <button id="unlock-btn" class="primary">Unlock Vault</button>
   </div>
-</div>
 
-<footer>
-  © 2025 Bocaletto Luca — 
-  <a href="https://github.com/bocaletto-luca/PasswordVault" target="_blank">GitHub Repo</a>
-</footer>
+  <footer>
+    © 2025 Bocaletto Luca — 
+    <a href="https://github.com/bocaletto-luca/PasswordVault" target="_blank">GitHub Repo</a>
+  </footer>
 
-<script>
-(async()=>{
-  const SALT_KEY='vaultSalt', VAULT_KEY='vaultData';
-  let key, vaultData=[], settingNew=false;
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const SALT_KEY = 'vaultSalt', VAULT_KEY = 'vaultData';
+      let key, vaultData = [], settingNew = false;
 
-  // Elements
-  const tabs    = {gen:$('#tab-gen'), vault:$('#tab-vault')};
-  const secs    = {gen:$('#generator'), vault:$('#vault')};
-  const opts    = {
-    lower:$('#opt-lower'), upper:$('#opt-upper'),
-    nums:$('#opt-numbers'), syms:$('#opt-symbols'),
-    len: $('#opt-length')
-  };
-  const genPwd  =$('#gen-password');
-  const btnGen  =$('#generate'), btnCopyGen=$('#copy-gen');
-  const entrySite=$('#entry-site'), entryUser=$('#entry-user');
-  const entryPw=$('#entry-password'), btnSave=$('#save-entry');
-  const filterIn=$('#filter-site'), tableBody=$('#entries-body');
-  const btnExport=$('#export-vault'), btnImport=$('#import-vault');
-  const fileInp=$('#import-vault-file');
-  const modalOv=$('#modal-overlay'), modalTitle=$('#modal-title');
-  const pwInput=$('#master-pw'), btnUnlock=$('#unlock-btn');
+      // DOM refs
+      const tabs       = { gen: document.getElementById('tab-gen'), vault: document.getElementById('tab-vault') };
+      const secs       = { gen: document.getElementById('generator'), vault: document.getElementById('vault') };
+      const opts       = {
+        lower:  document.getElementById('opt-lower'),
+        upper:  document.getElementById('opt-upper'),
+        nums:   document.getElementById('opt-numbers'),
+        syms:   document.getElementById('opt-symbols'),
+        len:    document.getElementById('opt-length')
+      };
+      const genPwd     = document.getElementById('gen-password');
+      const btnGen     = document.getElementById('generate');
+      const btnCopyGen = document.getElementById('copy-gen');
+      const entrySite  = document.getElementById('entry-site');
+      const entryUser  = document.getElementById('entry-user');
+      const entryPw    = document.getElementById('entry-password');
+      const btnSave    = document.getElementById('save-entry');
+      const filterInp  = document.getElementById('vault-filter');
+      const tbody      = document.getElementById('entries-body');
+      const btnExport  = document.getElementById('export-vault');
+      const btnImport  = document.getElementById('import-vault');
+      const fileInp    = document.getElementById('import-vault-file');
+      const modalOv    = document.getElementById('modal-overlay');
+      const modalTitle = document.getElementById('modal-title');
+      const pwInput    = document.getElementById('master-pw');
+      const btnUnlock  = document.getElementById('unlock-btn');
 
-  // Tab helpers
-  function $(id){return document.getElementById(id);}
-  tabs.gen.onclick=()=>{activate('gen');};
-  tabs.vault.onclick=()=>{activate('vault');unlock();};
-  function activate(tab){
-    tabs.gen.classList.remove('active');
-    tabs.vault.classList.remove('active');
-    secs.gen.classList.remove('active');
-    secs.vault.classList.remove('active');
-    tabs[tab].classList.add('active');
-    secs[tab].classList.add('active');
-  }
-
-  // Generator
-  btnGen.onclick=()=>{
-    let chars='';
-    if(opts.lower.checked) chars+='abcdefghijklmnopqrstuvwxyz';
-    if(opts.upper.checked) chars+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    if(opts.nums.checked) chars+='0123456789';
-    if(opts.syms.checked) chars+='!@#$%^&*()_+-=[]{}|;:,.<>?';
-    let pwd='';
-    for(let i=0;i<opts.len.value;i++){
-      pwd+=chars.charAt(Math.floor(Math.random()*chars.length));
-    }
-    genPwd.value=pwd; entryPw.value=pwd;
-  };
-  btnCopyGen.onclick=()=>navigator.clipboard.writeText(genPwd.value);
-
-  // Crypto
-  async function getKey(master){
-    const enc=new TextEncoder();
-    let salt=localStorage.getItem(SALT_KEY);
-    if(!salt){
-      const rv=crypto.getRandomValues(new Uint8Array(16));
-      salt=btoa(String.fromCharCode(...rv));
-      localStorage.setItem(SALT_KEY,salt);
-    }
-    const saltBytes=Uint8Array.from(atob(salt),c=>c.charCodeAt(0));
-    const base=await crypto.subtle.importKey('raw',enc.encode(master),'PBKDF2',false,['deriveKey']);
-    return crypto.subtle.deriveKey({
-      name:'PBKDF2',salt:saltBytes,iterations:100000,hash:'SHA-256'
-    },base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
-  }
-  async function encrypt(data){
-    const iv=crypto.getRandomValues(new Uint8Array(12));
-    const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(data)));
-    return {iv:btoa(String.fromCharCode(...iv)),ct:btoa(String.fromCharCode(...new Uint8Array(ct)))};
-  }
-  async function decrypt(blob){
-    const iv=Uint8Array.from(atob(blob.iv),c=>c.charCodeAt(0));
-    const ct=Uint8Array.from(atob(blob.ct),c=>c.charCodeAt(0));
-    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct);
-    return JSON.parse(new TextDecoder().decode(pt));
-  }
-
-  // Unlock / Set Master
-  async function unlock(){
-    const stored=localStorage.getItem(VAULT_KEY);
-    settingNew=!stored;
-    modalTitle.textContent = settingNew ? 'Set Master Password' : 'Enter Master Password';
-    pwInput.value=''; modalOv.classList.add('visible'); pwInput.focus();
-  }
-  btnUnlock.onclick=async()=>{
-    try {
-      key=await getKey(pwInput.value);
-      if(settingNew){
-        vaultData=[]; await saveVault();
-      } else {
-        const blob=JSON.parse(localStorage.getItem(VAULT_KEY));
-        vaultData=await decrypt(blob);
+      // Tab switch
+      tabs.gen.onclick = () => activate('gen');
+      tabs.vault.onclick = () => { activate('vault'); unlockVault(); };
+      function activate(tab) {
+        tabs.gen.classList.remove('active');
+        tabs.vault.classList.remove('active');
+        secs.gen.classList.remove('active');
+        secs.vault.classList.remove('active');
+        tabs[tab].classList.add('active');
+        secs[tab].classList.add('active');
       }
-      modalOv.classList.remove('visible');
-      renderVault();
-    } catch {
-      alert('Incorrect master password.');
-    }
-  };
 
-  // Save vault
-  async function saveVault(){
-    const blob=await encrypt(vaultData);
-    localStorage.setItem(VAULT_KEY,JSON.stringify(blob));
-  }
-
-  // Render vault table
-  function renderVault(){
-    const filter=filterIn.value.toLowerCase();
-    tableBody.innerHTML='';
-    vaultData.filter(e=>
-      e.site.toLowerCase().includes(filter)||
-      e.user.toLowerCase().includes(filter)
-    ).forEach((e,i)=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`
-        <td><input data-field="site" value="${e.site}"></td>
-        <td><input data-field="user" value="${e.user}"></td>
-        <td><input type="password" data-field="pw" value="${e.pw}"></td>
-        <td><button class="accent">Copy</button></td>
-        <td><button class="danger">Delete</button></td>`;
-      // attach events
-      tr.querySelectorAll('input').forEach(inp=>{
-        inp.onchange=async()=>{
-          const f=inp.dataset.field;
-          vaultData[i][f]=inp.value;
-          await saveVault();
-        };
-        if(inp.dataset.field==='pw'){
-          inp.onfocus=()=>inp.type='text';
-          inp.onblur=()=>inp.type='password';
+      // Generate password
+      btnGen.onclick = () => {
+        let chars = '';
+        if (opts.lower.checked) chars += 'abcdefghijklmnopqrstuvwxyz';
+        if (opts.upper.checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        if (opts.nums.checked)  chars += '0123456789';
+        if (opts.syms.checked)  chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+        const length = opts.len.valueAsNumber;
+        let pwd = '';
+        for (let i=0; i<length; i++) {
+          pwd += chars.charAt(Math.floor(Math.random()*chars.length));
         }
-      });
-      tr.querySelector('.accent').onclick=()=>navigator.clipboard.writeText(e.pw);
-      tr.querySelector('.danger').onclick=async()=>{
-        if(!confirm('Delete entry?')) return;
-        vaultData.splice(i,1);
+        genPwd.value = pwd;
+        entryPw.value = pwd;
+      };
+
+      btnCopyGen.onclick = () => navigator.clipboard.writeText(genPwd.value);
+
+      // Crypto helpers
+      async function getKey(master) {
+        const enc = new TextEncoder();
+        let salt = localStorage.getItem(SALT_KEY);
+        if (!salt) {
+          const sv = crypto.getRandomValues(new Uint8Array(16));
+          salt = btoa(String.fromCharCode(...sv));
+          localStorage.setItem(SALT_KEY, salt);
+        }
+        const saltBytes = Uint8Array.from(atob(salt), c=>c.charCodeAt(0));
+        const baseKey = await crypto.subtle.importKey(
+          'raw', enc.encode(master), 'PBKDF2', false, ['deriveKey']
+        );
+        return crypto.subtle.deriveKey(
+          { name:'PBKDF2', salt: saltBytes, iterations: 100000, hash:'SHA-256' },
+          baseKey,
+          { name:'AES-GCM', length:256 },
+          false,
+          ['encrypt','decrypt']
+        );
+      }
+
+      async function encrypt(data) {
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const ct = await crypto.subtle.encrypt(
+          { name:'AES-GCM', iv },
+          key,
+          new TextEncoder().encode(JSON.stringify(data))
+        );
+        return {
+          iv: btoa(String.fromCharCode(...iv)),
+          ct: btoa(String.fromCharCode(...new Uint8Array(ct)))
+        };
+      }
+
+      async function decrypt(blob) {
+        const iv = Uint8Array.from(atob(blob.iv), c=>c.charCodeAt(0));
+        const ct = Uint8Array.from(atob(blob.ct), c=>c.charCodeAt(0));
+        const pt = await crypto.subtle.decrypt(
+          { name:'AES-GCM', iv }, key, ct
+        );
+        return JSON.parse(new TextDecoder().decode(pt));
+      }
+
+      // Unlock / Set master
+      async function unlockVault() {
+        const stored = localStorage.getItem(VAULT_KEY);
+        settingNew = !stored;
+        modalTitle.textContent = settingNew ? 'Set Master Password' : 'Enter Master Password';
+        pwInput.value = '';
+        modalOv.classList.add('visible');
+        pwInput.focus();
+      }
+
+      btnUnlock.onclick = async () => {
+        try {
+          key = await getKey(pwInput.value);
+          if (settingNew) {
+            vaultData = [];
+            await saveVault();
+          } else {
+            const blob = JSON.parse(localStorage.getItem(VAULT_KEY));
+            vaultData = await decrypt(blob);
+          }
+          modalOv.classList.remove('visible');
+          renderVault();
+        } catch {
+          alert('Incorrect master password.');
+        }
+      };
+
+      async function saveVault() {
+        const blob = await encrypt(vaultData);
+        localStorage.setItem(VAULT_KEY, JSON.stringify(blob));
+      }
+
+      function renderVault() {
+        const filter = filterInp.value.toLowerCase();
+        tbody.innerHTML = '';
+        vaultData.filter(e =>
+          e.site.toLowerCase().includes(filter) ||
+          e.user.toLowerCase().includes(filter)
+        ).forEach((e, i) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><input data-field="site" value="${e.site}"></td>
+            <td><input data-field="user" value="${e.user}"></td>
+            <td><input type="password" data-field="pw" value="${e.pw}"></td>
+            <td><button class="accent">Copy</button></td>
+            <td><button class="danger">Delete</button></td>
+          `;
+          // inline edit
+          tr.querySelectorAll('input').forEach(inp => {
+            inp.onchange = async () => {
+              vaultData[i][inp.dataset.field] = inp.value;
+              await saveVault();
+            };
+            if (inp.dataset.field === 'pw') {
+              inp.onfocus = () => inp.type = 'text';
+              inp.onblur  = () => inp.type = 'password';
+            }
+          });
+          // copy
+          tr.querySelector('.accent').onclick = () => navigator.clipboard.writeText(e.pw);
+          // delete
+          tr.querySelector('.danger').onclick = async () => {
+            if (!confirm('Delete entry?')) return;
+            vaultData.splice(i,1);
+            await saveVault();
+            renderVault();
+          };
+          tbody.appendChild(tr);
+        });
+      }
+
+      filterInp.oninput = renderVault;
+
+      btnSave.onclick = async () => {
+        if (!entrySite.value.trim() || !entryUser.value.trim() || !entryPw.value.trim()) {
+          alert('Site, user, and password are required.');
+          return;
+        }
+        vaultData.push({
+          site: entrySite.value.trim(),
+          user: entryUser.value.trim(),
+          pw:   entryPw.value.trim()
+        });
         await saveVault();
+        entrySite.value = entryUser.value = entryPw.value = '';
         renderVault();
       };
-      tableBody.appendChild(tr);
+
+      btnExport.onclick = () => {
+        const data = localStorage.getItem(VAULT_KEY) || '{}';
+        const blob = new Blob([data], {type:'application/json'});
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url; a.download = 'vault.json'; a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      btnImport.onclick = () => fileInp.click();
+      fileInp.onchange = e => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            JSON.parse(reader.result);
+            localStorage.setItem(VAULT_KEY, reader.result);
+            alert('Vault imported. Unlock to view.');
+          } catch {
+            alert('Invalid JSON file.');
+          }
+        };
+        reader.readAsText(f);
+      };
+
+      // init
+      activate('gen');
     });
-  }
-  filterIn.oninput=renderVault;
-
-  // Save new entry
-  btnSave.onclick=async()=>{
-    if(!entrySite.value||!entryUser.value||!entryPw.value){
-      alert('Site, user, and password are required.');return;
-    }
-    vaultData.push({
-      site: entrySite.value.trim(),
-      user: entryUser.value.trim(),
-      pw: entryPw.value.trim()
-    });
-    await saveVault();
-    entrySite.value=''; entryUser.value=''; entryPw.value='';
-    renderVault();
-  };
-
-  // Import/Export
-  btnExport.onclick=()=>{
-    const data=localStorage.getItem(VAULT_KEY)||'{}';
-    const blob=new Blob([data],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url; a.download='vault.json'; a.click();
-    URL.revokeObjectURL(url);
-  };
-  btnImport.onclick=()=>fileInp.click();
-  fileInp.onchange=e=>{
-    const f=e.target.files[0];
-    if(!f) return;
-    const r=new FileReader();
-    r.onload=()=>{
-      try{JSON.parse(r.result);
-        localStorage.setItem(VAULT_KEY,r.result);
-        alert('Vault imported. Unlock to view.');
-      }catch{alert('Invalid JSON file.');}
-    };
-    r.readAsText(f);
-  };
-
-  // Initialize
-  activate('gen');
-})();
-</script>
+  </script>
 </body>
 </html>
